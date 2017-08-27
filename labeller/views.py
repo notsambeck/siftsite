@@ -16,12 +16,11 @@ def image_upload(request):
 
 
 def list_view(request):
-    ims = Image.objects.all()
+    imgs = Image.objects.all()
 
-    return render(request, 'list_view.html', {'images': ims})
+    return render(request, 'list_view.html', {'images': imgs})
 
 
 def index(request):
-    return HttpResponse('index does nothing. <a href="upload">upload</a> <a href="list">list</a>')
-
-# Create your views here.
+    return HttpResponse('''Index does nothing.
+<a href="upload">upload</a> <a href="list">list</a>''')
