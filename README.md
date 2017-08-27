@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/notsambeck/siftsite)](https://travis-ci.org/notsambeck/siftsite)
+[![Build Status](https://travis-ci.org/notsambeck/siftsite.svg)](https://travis-ci.org/notsambeck/siftsite)
 
 ## siftsite
 
