@@ -1,14 +1,15 @@
 from django.test import TestCase
-from .models import Image
+from .models import Image, User
 
 
 class ImageModelTest(TestCase):
-    fixtures = ['file json']
+    fixtures = ['a_fixture.json']
+    a_user = User.objects.all()[0]
 
     def create_image(self):
         return Image.objects.create(source='test_image',
                                     correct_label=0,
-                                    uploaded_by=1,
+                                    uploaded_by=self.a_user,
                                     filename='../media/2418_class-1.png')
 
     def test_create_image(self):
