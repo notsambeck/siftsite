@@ -4,11 +4,11 @@
     {% for image in images %}
     <li>
 	{% load static %}
-	<a href="/static/media/{{ image.filename }}">
+	<a href="{{ image.filename.url }}">
 	    {{ image.filename }}
 	</a>
 	{% load static %}
-	<img src="/static/media/{{image.filename }}" alt="image load failed"/>
+	<img src="{{image.filename.url }}" alt="image load failed"/>
     </li>
     {% endfor %}
 </ul>
