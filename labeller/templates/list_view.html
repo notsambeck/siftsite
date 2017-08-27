@@ -1,0 +1,23 @@
+{% if images %}
+<h1>Image Town</h1>
+<ul>
+    {% for image in images %}
+    <li>
+	{% load static %}
+	<a href="/static/media/{{ image.filename }}">
+	    {{ image.filename }}
+	</a>
+	{% load static %}
+	<img src="/static/media/{{image.filename }}" alt="image load failed"/>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h3>
+    navigation bar:
+    <br>
+    <a href="{% url 'labeller:index' %}">index</a>
+    <br>
+    <a href="{% url 'labeller:upload' %}">upload</a>
+</h3>

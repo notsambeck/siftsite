@@ -1,0 +1,12 @@
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">UPLOAD</button>
+  </form>
+
+  <p>
+      <a href="{% url 'labeller:index' %}">index</a>
+      <a href="{% url 'labeller:list' %}">list</a>
+  </p>
+{% endblock %}
