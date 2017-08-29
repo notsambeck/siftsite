@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .forms import ImageUploadForm
 from django.http import HttpResponse
+from .forms import ImageUploadForm
 from .models import Image
 
 
@@ -17,10 +17,11 @@ def image_upload(request):
 
 def list_view(request):
     imgs = Image.objects.all()
-
+    if imgs.count() >= 20:
+        imgs = imgs[:20]
     return render(request, 'list_view.html', {'images': imgs})
 
 
 def index(request):
-    return HttpResponse('''Index does nothing.
+    return HttpResponse('''Index for labeller app.
 <a href="upload">upload</a> <a href="list">list</a>''')
