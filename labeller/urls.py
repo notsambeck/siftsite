@@ -9,5 +9,6 @@ app_name = 'labeller'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^upload/', views.image_upload, name='upload'),
-    url(r'^list/', views.list_view, name='list')
+    url(r'^list/', views.list_view, name='list'),
+    url(r'^label/', views.label_view, name='label')
 ]
