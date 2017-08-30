@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="/media/css/main.css"/>
+<link rel="shortcut icon" type="image/png" href="/media/css/favicon.ico"/>
+
+<div style="padding-left:10%; padding-right:10%; padding-top:3%">
+    <div class="container" style="float:left;">
+	<h1>
+	    SIFT
+	</h1>
+	<h4>
+	    <ul>
+		<li><a href="{% url 'labeller:label' %}">game</a></li>
+		<li><a href="{% url 'labeller:list' %}">list</a></li>
+		<li><a href="{% url 'labeller:upload' %}">upload</a></li>
+	    </ul>
+	</h4>
+    </div>
+
+    <div style="float: right">
+
+	<p> add ?format=json to url to see this data </p>
+	{% block content %}
+	{% endblock %}
+
+    </div>
+</div>

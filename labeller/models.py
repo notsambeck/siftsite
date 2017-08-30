@@ -25,7 +25,7 @@ class Image(models.Model):
                                      max_length=512, default=None, null=True)
     tweeted = models.BooleanField("Image was tweeted", default=False)
     uploaded_by = models.ForeignKey(User, default=None, null=True)
-    filename = models.FileField("file path", upload_to='')
+    filename = models.FileField("file path", upload_to='images')
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

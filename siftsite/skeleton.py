@@ -19,7 +19,9 @@ from __future__ import division, print_function, absolute_import
 
 import argparse
 import sys
+import os
 import logging
+import requests
 
 from siftsite import __version__
 
@@ -30,42 +32,60 @@ __license__ = "mit"
 _logger = logging.getLogger(__name__)
 
 
-def fib(n):
-    """Fibonacci example function
+def upload_dir(filepath, label, source):
+    base_dir = os.path.expanduser(os.path.dirname(filepath))
+    files = os.listdir(base_dir)
+    input('will upload {} files, continue or ctrl-c'.format(len(files)))
+    for f in files:
+        print(f[-4:])
+        if f[-4:] == '.png':
+            upload(os.path.join(base_dir, f), label, source)
+
+
+def upload(filepath, label, source):
+    # POST request to your API with "files" key in requests data dict
+
+    # base_dir = os.path.join(os.getenv('HOME'), 'Pictures')
+    base_dir = os.path.expanduser(os.path.dirname(filepath))
+    url = 'http://localhost:8000/api/'
+    file_name = os.path.basename(filepath)
+    with open(os.path.join(base_dir, file_name), 'rb') as fin:
+        print('file:', base_dir, '/', file_name)
+        POST_data = {'correct_label': label, 'source': source,
+                     'filename': file_name}
+        files = {'filename': (file_name, fin), 'file': file_name}
+        resp = requests.post(url, data=POST_data, files=files)
+        print(resp)
+
+
+def setup_logging(loglevel):
+    """Setup basic logging
 
     Args:
-      n (int): integer
-
-    Returns:
-      int: n-th Fibonacci number
+      loglevel (int): minimum loglevel for emitting messages
     """
-    assert n > 0
-    a, b = 1, 1
-    for i in range(n-1):
-        a, b = b, a+b
-    return a
+    logformat = "[%(asctime)s] %(levelname)s:%(name)s:%(message)s"
+    logging.basicConfig(level=loglevel, stream=sys.stdout,
+                        format=logformat, datefmt="%Y-%m-%d %H:%M:%S")
 
 
 def parse_args(args):
     """Parse command line parameters
-
     Args:
       args ([str]): command line parameters as list of strings
-
     Returns:
       :obj:`argparse.Namespace`: command line parameters namespace
     """
-    parser = argparse.ArgumentParser(
-        description="Just a Fibonnaci demonstration")
+    parser = argparse.ArgumentParser()
     parser.add_argument(
         '--version',
         action='version',
         version='siftsite {ver}'.format(ver=__version__))
     parser.add_argument(
-        dest="n",
-        help="n-th Fibonacci number",
-        type=int,
-        metavar="INT")
+        '--upload',
+        dest="upload",
+        help="Path to image file for upload to labler API",
+        type=str)
     parser.add_argument(
         '-v',
         '--verbose',
@@ -80,18 +100,7 @@ def parse_args(args):
         help="set loglevel to DEBUG",
         action='store_const',
         const=logging.DEBUG)
-    return parser.parse_args(args)
-
-
-def setup_logging(loglevel):
-    """Setup basic logging
-
-    Args:
-      loglevel (int): minimum loglevel for emitting messages
-    """
-    logformat = "[%(asctime)s] %(levelname)s:%(name)s:%(message)s"
-    logging.basicConfig(level=loglevel, stream=sys.stdout,
-                        format=logformat, datefmt="%Y-%m-%d %H:%M:%S")
+    return parser.parse_known_args(args)
 
 
 def main(args):
@@ -100,11 +109,11 @@ def main(args):
     Args:
       args ([str]): command line parameter list
     """
-    args = parse_args(args)
-    setup_logging(args.loglevel)
-    _logger.debug("Starting crazy calculations...")
-    print("The {}-th Fibonacci number is {}".format(args.n, fib(args.n)))
-    _logger.info("Script ends here")
+    args, unknown = parse_args(args)
+    if args.upload:
+        upload(args.upload)
+    else:
+        print('yeah cool sure')
 
 
 def run():

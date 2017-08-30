@@ -1,11 +1,16 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
 from .forms import ImageUploadForm, ImageChoiceForm
 from .models import Image, Choice, TotalVotes
+from .serializers import ImageSerializer
 
 from numpy.random import randint
+
+from rest_framework.decorators import api_view
+from rest_framework import generics, status
+from rest_framework.response import Response
 
 
 def image_upload(request):
@@ -64,15 +69,65 @@ with POST request, processes data from form submit'''
 def list_view(request):
     '''list_view shows up to 30 images'''
     imgs = Image.objects.all()
-    if imgs.count() > 30:
-        imgs = imgs[:30]
+    last30 = imgs.count() - 30
+    if last30 > 0:
+        imgs = imgs[last30:]
 
     return render(request, 'list_view.html', {'images': imgs})
 
 
 def results(request, img_id):
+    '''show vote results for an image (by id)'''
     image = Image.objects.get(pk=img_id)
     choices = Choice.objects.all()
     votes = TotalVotes.objects.filter(image=image)
     return render(request, 'results_view.html',
                   {'image': image, 'votes': votes, 'choices': choices})
+
+
+class ListImages(generics.ListCreateAPIView):
+    '''builtin image list view?'''
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+
+
+@api_view(['GET', 'POST'])
+def api_image_list(request):
+    '''
+    List all images or create a new one
+    '''
+    if request.method == 'GET':
+        images = Image.objects.all()
+        serializer = ImageSerializer(images, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = ImageSerializer(data=request.data)
+        if serializer.is_valid():
+            form = ImageUploadForm(serializer.data, request.FILES)
+            if form.is_valid():
+                form.save()
+                return Response(serializer.data,
+                                status=status.HTTP_201_CREATED)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'POST'])
+def api_image(request, img_id):
+    '''
+    List all images or create a new one
+    '''
+    image = get_object_or_404(Image, pk=img_id)
+
+    if request.method == 'GET':
+        serializer = ImageSerializer(image)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = ImageSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
