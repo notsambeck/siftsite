@@ -10,8 +10,8 @@
 
 {% if votes %}
   {% for vote in votes %}
-  <p>{{ vote.choice.alt_text }}</p>
-  <h3>{{ vote.choice.choice }} VOTES: {{ vote.votes }}</h3>
+  <h3>CLASS {{ vote.choice.choice }} VOTES: {{ vote.votes }}</h3>
+  <p>( i.e. {{ vote.choice.alt_text }} )</p>
   <br />
   {% endfor %}
 {% else %}
