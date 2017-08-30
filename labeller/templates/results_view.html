@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3> IMAGE RESULTS: {{ image.filename }} </h3>
+<p> nominally true label: {{ image.correct_label }} </p>
+<br />
+
+{% load static %}
+<img src="{{ image.filename.url }}" alt="{{ image.filename }} load failed" width="256px" height="256px"/>
+
+{% if votes %}
+  {% for vote in votes %}
+  <p>{{ vote.choice.alt_text }}</p>
+  <h3>{{ vote.choice.choice }} VOTES: {{ vote.votes }}</h3>
+  <br />
+  {% endfor %}
+{% else %}
+  <p>there are no votes for this image</p>    
+{% endif %}
+
+<br />
+<p>tweeted: {{ image.tweeted }}</p>
+<p>google labels: {{ image.google_labels }}</p>
+<p>source: {{ image.source }}</p>
+<p>date uploaded: {{ image.date }}</p>
+    
+
+{% endblock %}

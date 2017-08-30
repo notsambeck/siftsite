@@ -10,7 +10,7 @@
 	<img src="{{image.filename.url }}" alt="image load failed" height="64px" width="64px"/>
 
 	{% load static %}
-	<a href="{{ image.filename.url }}">
+	<a href="{% url 'labeller:results' image.id %}">
 	    {{ image.filename }}
 	</a>
     </li>

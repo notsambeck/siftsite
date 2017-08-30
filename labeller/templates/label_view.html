@@ -4,9 +4,9 @@
 <h3> IMAGE FUN LABEL TIME </h3>
 
 {% load static %}
-<img src="{{ img.filename.url }}" alt="{{ img.filename }} load failed" width="256px" height="256px"/>
+<img src="{{ image.filename.url }}" alt="{{ image.filename }} load failed" width="256px" height="256px"/>
 
-<form action="{% url 'labeller:label' img.id %}" method="post">
+<form action="{% url 'labeller:label' image.id %}" method="post">
     {% csrf_token %}
     {% for choice in choices %}
     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />

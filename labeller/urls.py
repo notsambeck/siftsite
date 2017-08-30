@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^upload/', views.image_upload, name='upload'),
     url(r'^label/(?P<img_id>[0-9]*)$', views.label_view, name='label'),
     url(r'^label/', views.label_view, name='label'),
-    url(r'^results/(?P<img_id>[0-9]*)$', views.results, name='results'),
+    url(r'^results/(?P<img_id>[0-9]+)$', views.results, name='results'),
 ]

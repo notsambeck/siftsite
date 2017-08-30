@@ -14,7 +14,7 @@ def image_upload(request):
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('labeller:index')
+            return redirect('labeller:list')
     else:
         form = ImageUploadForm()
     return render(request, 'image_upload_form.html', {'form': form})
@@ -31,13 +31,19 @@ with POST request, processes data from form submit'''
             img = Image.objects.get(pk=img_id)
         else:
             images = Image.objects.all()
-            img = images[randint(0, images.count())]
+            if images.count() > 0:
+                img = images[randint(0, images.count())]
+            else:
+                return HttpResponse("no images uploaded. <a href='/'>home</>")
 
         choices = Choice.objects.all()
+        if not choices.count():
+            return HttpResponse("no choices created. <a href='/'>home</>")
+
         return render(request, 'label_view.html',
-                      {'img': img, 'choices': choices,
+                      {'image': img, 'choices': choices,
                        'form': ImageChoiceForm()})
-    else:  # 'POST'
+    elif request.method == 'POST':  # 'POST'
         form = ImageChoiceForm(request.POST)
         if form.is_valid():
             selected_label = Choice.objects.get(pk=request.POST['choice'])
@@ -50,22 +56,23 @@ with POST request, processes data from form submit'''
             return HttpResponseRedirect(reverse('labeller:label'))
 
         else:
-            return HttpResponse("form is invalid (tried). <a href='/'>home</>")
+            return HttpResponse("form is invalid. <a href='/'>home</>")
+    else:
+        return HttpResponse("not a POST or GET request. <a href='/'>home</>")
 
 
 def list_view(request):
-    '''list_view shows up to 20 images'''
+    '''list_view shows up to 30 images'''
     imgs = Image.objects.all()
-    if imgs.count() > 20:
-        imgs = imgs[:20]
+    if imgs.count() > 30:
+        imgs = imgs[:30]
 
     return render(request, 'list_view.html', {'images': imgs})
 
 
-def results(request):
-    pass
-
-
-def index(request):
-    return HttpResponse('''Index for labeller app.
-<a href="upload">upload</a> <a href="list">list</a>''')
+def results(request, img_id):
+    image = Image.objects.get(pk=img_id)
+    choices = Choice.objects.all()
+    votes = TotalVotes.objects.filter(image=image)
+    return render(request, 'results_view.html',
+                  {'image': image, 'votes': votes, 'choices': choices})
