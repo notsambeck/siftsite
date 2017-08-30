@@ -14,5 +14,4 @@ urlpatterns = [
     url(r'^results/(?P<img_id>[0-9]+)$', views.results, name='results'),
     url(r'^api/$', views.api_image_list),
     url(r'^api/(?P<img_id>[0-9]+)$', views.api_image),
-    url(r'^x/$', views.ListImages.as_view()),
 ]

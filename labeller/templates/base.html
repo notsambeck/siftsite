@@ -1,13 +1,15 @@
 <link rel="stylesheet" href="/media/css/main.css"/>
 <link rel="shortcut icon" type="image/png" href="/media/css/favicon.ico"/>
 
-<div style="padding-left:10%; padding-right:10%; padding-top:3%">
-    <div class="container" style="float:left;">
-	<h1>
-	    SIFT
-	</h1>
+<div style="padding-left:10%; padding-right:10%">
+    <div class="container" style="float:left; top: 5%; postition: fixed;">
+	<div>
+	    <h1>
+		SIFT
+	    </h1>
+	</div>
 	<h4>
-	    <ul>
+	    <ul style="text-align: left;">
 		<li><a href="{% url 'labeller:label' %}">game</a></li>
 		<li><a href="{% url 'labeller:list' %}">list</a></li>
 		<li><a href="{% url 'labeller:upload' %}">upload</a></li>

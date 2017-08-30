@@ -33,6 +33,7 @@ _logger = logging.getLogger(__name__)
 
 
 def upload_dir(filepath, label, source):
+    '''upload whole directory (calls upload on all .png)'''
     base_dir = os.path.expanduser(os.path.dirname(filepath))
     files = os.listdir(base_dir)
     input('will upload {} files, continue or ctrl-c'.format(len(files)))
@@ -43,9 +44,8 @@ def upload_dir(filepath, label, source):
 
 
 def upload(filepath, label, source):
-    # POST request to your API with "files" key in requests data dict
+    '''POST request to your API with "files" key in requests data dict'''
 
-    # base_dir = os.path.join(os.getenv('HOME'), 'Pictures')
     base_dir = os.path.expanduser(os.path.dirname(filepath))
     url = 'http://localhost:8000/api/'
     file_name = os.path.basename(filepath)

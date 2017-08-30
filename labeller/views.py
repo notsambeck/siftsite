@@ -9,7 +9,7 @@ from .serializers import ImageSerializer
 from numpy.random import randint
 
 from rest_framework.decorators import api_view
-from rest_framework import generics, status
+from rest_framework import status
 from rest_framework.response import Response
 
 
@@ -67,11 +67,11 @@ with POST request, processes data from form submit'''
 
 
 def list_view(request):
-    '''list_view shows up to 30 images'''
+    '''list_view shows up to 60 images'''
     imgs = Image.objects.all()
-    last30 = imgs.count() - 30
-    if last30 > 0:
-        imgs = imgs[last30:]
+    last60 = imgs.count() - 60
+    if last60 > 0:
+        imgs = imgs[last60:]
 
     return render(request, 'list_view.html', {'images': imgs})
 
@@ -83,12 +83,6 @@ def results(request, img_id):
     votes = TotalVotes.objects.filter(image=image)
     return render(request, 'results_view.html',
                   {'image': image, 'votes': votes, 'choices': choices})
-
-
-class ListImages(generics.ListCreateAPIView):
-    '''builtin image list view?'''
-    queryset = Image.objects.all()
-    serializer_class = ImageSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -113,21 +107,12 @@ def api_image_list(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def api_image(request, img_id):
     '''
-    List all images or create a new one
+    List one image by id
     '''
     image = get_object_or_404(Image, pk=img_id)
 
-    if request.method == 'GET':
-        serializer = ImageSerializer(image)
-        return Response(serializer.data)
-
-    elif request.method == 'POST':
-        serializer = ImageSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializer = ImageSerializer(image)
+    return Response(serializer.data)
