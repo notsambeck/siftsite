@@ -62,6 +62,10 @@ def list_view(request):
     return render(request, 'list_view.html', {'images': imgs})
 
 
+def results(request):
+    pass
+
+
 def index(request):
-    return HttpResponse('''Index does nothing.
+    return HttpResponse('''Index for labeller app.
 <a href="upload">upload</a> <a href="list">list</a>''')
