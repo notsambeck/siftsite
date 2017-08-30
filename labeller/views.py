@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
-from .forms import ImageUploadForm, ImageChoiceForm, TotalVotes
-from .models import Image, Choice
+from .forms import ImageUploadForm, ImageChoiceForm
+from .models import Image, Choice, TotalVotes
 
 from numpy.random import randint
 
@@ -20,27 +20,37 @@ def image_upload(request):
     return render(request, 'image_upload_form.html', {'form': form})
 
 
-def label_view(request):
-    '''label_view is a view that shows a random image;
-user can label the image with a label from Choice model'''
-    images = Image.objects.all()
-    img = images[randint(0, images.count())]
-    choices = Choice.objects.all()
-    if request.methiod == 'POST':
+def label_view(request, img_id=None):
+    '''label_view:
+with GET request, shows a random image;
+user can label the image with a label from Choice model.
+
+with POST request, processes data from form submit'''
+    if request.method == 'GET':
+        if img_id:
+            img = Image.objects.get(pk=img_id)
+        else:
+            images = Image.objects.all()
+            img = images[randint(0, images.count())]
+
+        choices = Choice.objects.all()
+        return render(request, 'label_view.html',
+                      {'img': img, 'choices': choices,
+                       'form': ImageChoiceForm()})
+    else:  # 'POST'
         form = ImageChoiceForm(request.POST)
         if form.is_valid():
+            selected_label = Choice.objects.get(pk=request.POST['choice'])
+            vote_obj, created = TotalVotes.objects.get_or_create(
+                image=Image.objects.get(pk=img_id),
+                choice=selected_label
+            )
+            vote_obj.votes += 1
+            vote_obj.save()
+            return HttpResponseRedirect(reverse('labeller:label'))
 
-            return HttpResponseRedirect(reverse('labeller:index'))
-    else:
-        return render(request, 'label_view.html', {'img': img,
-                                                   'choices': choices})
-
-
-def vote(request, image_id):
-    selected_label = Choice.label.get(pk=request.POST['choice'])
-    votesObj = TotalVotes.get(image=image_id, label=selected_label)
-    votesObj.votes += 1
-    votesObj.save()
+        else:
+            return HttpResponse("form is invalid (tried). <a href='/'>home</>")
 
 
 def list_view(request):

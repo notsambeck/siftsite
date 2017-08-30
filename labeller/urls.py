@@ -7,8 +7,9 @@ from . import views
 
 app_name = 'labeller'
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+    url(r'^$|index|list', views.list_view, name='list'),
     url(r'^upload/', views.image_upload, name='upload'),
-    url(r'^list/', views.list_view, name='list'),
-    url(r'^label/', views.label_view, name='label')
+    url(r'^label/(?P<img_id>[0-9]*)$', views.label_view, name='label'),
+    url(r'^label/', views.label_view, name='label'),
+    url(r'^results/(?P<img_id>[0-9]*)$', views.results, name='results'),
 ]

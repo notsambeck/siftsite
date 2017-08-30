@@ -1,23 +1,20 @@
-<h1> IMAGE LABEL VIEW </h1>
+{% extends 'base.html' %}
+{% block content %}
 
-<h2> {{ img.filename }} </h2>
+<h3> IMAGE FUN LABEL TIME </h3>
 
 {% load static %}
-<img src="{{ img.filename.url }}" alt="{{ img.filename }} load failed"/>
+<img src="{{ img.filename.url }}" alt="{{ img.filename }} load failed" width="256px" height="256px"/>
 
-<form action="{% url 'labeller:vote' choice.id %}" method="post">
+<form action="{% url 'labeller:label' img.id %}" method="post">
     {% csrf_token %}
     {% for choice in choices %}
     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
     <label for="choice{{ forloop.counter }}">{{ choice.alt_text }}</label><br />
     {% endfor %}
+
+    <br />
     <input type="submit" value="SUBMIT FORM" />
 </form>
 
-<h3>
-    navigation bar:
-    <br>
-    <a href="{% url 'labeller:index' %}">index</a>
-    <br>
-    <a href="{% url 'labeller:upload' %}">upload</a>
-</h3>
+{% endblock %}
