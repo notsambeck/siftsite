@@ -8,7 +8,7 @@ class ViewsTest(TestCase):
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
         self.user = User.objects.create_user(
-            username='jacob', email='jacob@…', password='top_secret')
+            username='jacob', email='jacob@nothing.com', password='top_secret')
 
     def test_list(self):
         # Create an instance of a GET request.
