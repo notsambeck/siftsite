@@ -48,15 +48,24 @@ class ImageModelTest(TestCase):
         return Image.objects.create(source='test_image',
                                     correct_label=0,
                                     sift_label=1,
-                                    description='test description',
+                                    description='test description 6839',
                                     tweeted=True,
                                     uploaded_by=self.a_user,
                                     google_raw_data=str([{'test_descr': 'x'}]),
-                                    filename='../media/2418_class-1.png')
+                                    filename='../media/css/test_image.png')
 
-    def test_create_image(self):
+    def test_create_get_image(self):
+        old_count = Image.objects.all().count()
         im = self.create_image()
         self.assertTrue(isinstance(im, Image))
+        im.save()
+        new_count = Image.objects.all().count()
+        self.assertEqual(old_count + 1, new_count)
+
+        got_im = Image.objects.all()[new_count - 1]
+        self.assertTrue(isinstance(got_im, Image))
+        self.assertTrue(got_im.tweeted)
+        self.assertEqual(got_im.description, 'test description 6839')
 
 
 class ChoiceModelTest(TestCase):

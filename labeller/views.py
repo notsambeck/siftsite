@@ -26,11 +26,13 @@ def image_upload(request):
 
 
 def label_view(request, img_id=None):
-    '''label_view:
-with GET request, shows a random image;
-user can label the image with a label from Choice model.
+    '''
+    label_view:
+    with GET request, shows a random image;
+    user can label the image with a label from Choice model.
 
-with POST request, processes data from form submit'''
+    with POST request, processes data from form submit
+    '''
     if request.method == 'GET':
         if img_id:
             img = Image.objects.get(pk=img_id)
@@ -96,13 +98,11 @@ def api_image_list(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        serializer = ImageSerializer(data=request.data)
+        serializer = ImageSerializer(data=request.data, files=request.files)
         if serializer.is_valid():
-            form = ImageUploadForm(serializer.data, request.FILES)
-            if form.is_valid():
-                form.save()
-                return Response(serializer.data,
-                                status=status.HTTP_201_CREATED)
+            serializer.save()
+            return Response(serializer.data,
+                            status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

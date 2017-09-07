@@ -57,6 +57,7 @@ def create_choice(value, text):
 
 
 if Choice.objects.all().count() == 0:
+    print("CREATING CHOICES FROM models.py SCRIPT")
     create_choice(1, 'appears to be a photographic image')
     create_choice(0, 'is fake')
 
