@@ -22,6 +22,7 @@ before_script:
   - git config --global user.email "you@example.com"
   - git config --global user.name "Your Name"
 script:
+  - export SECRET_KEY=q23h89pquno4389acb8o1iha3d0
   - python manage.py test
 after_success:
   - if [[ "$COVERAGE" == "true" ]]; then coveralls || echo "failed"; fi
