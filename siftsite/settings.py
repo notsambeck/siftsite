@@ -24,10 +24,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # old secret key...
 # ncy+5ie@kezm(=jd6ugld=o^bw_ahc6-2)^!c(4tuvoyhp&_km
 try:
-    SECRET_KEY = siftsite.secret.django_secret
-except ImportError:
-    print('using environment secret key variable...')
     SECRET_KEY = os.environ['SECRET_KEY']
+except KeyError:
+    print('using secret.py ...')
+    SECRET_KEY = siftsite.secret.django_secret
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
