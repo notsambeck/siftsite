@@ -98,7 +98,7 @@ def api_image_list(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        serializer = ImageSerializer(data=request.data, files=request.files)
+        serializer = ImageSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,
