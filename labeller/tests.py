@@ -3,6 +3,7 @@ from django.test import TestCase, RequestFactory
 
 from .views import label_view, list_view, api_image_list
 
+
 class ViewsTest(TestCase):
     def setUp(self):
         # Every test needs access to the request factory.
@@ -46,7 +47,11 @@ class ImageModelTest(TestCase):
     def create_image(self):
         return Image.objects.create(source='test_image',
                                     correct_label=0,
+                                    sift_label=1,
+                                    description='test description',
+                                    tweeted=True,
                                     uploaded_by=self.a_user,
+                                    google_raw_data=str([{'test_descr': 'x'}]),
                                     filename='../media/2418_class-1.png')
 
     def test_create_image(self):
@@ -68,4 +73,4 @@ class RequestTest:
     fixtures = ['a_fixture.json']
 
     def test_request_api(self):
-        print(requests.request('http://127.0.0.1:8000')) # flake8: noqa
+        print(requests.request('http://127.0.0.1:8000'))
