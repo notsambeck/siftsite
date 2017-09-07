@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
-import siftsite.secret
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -27,7 +26,8 @@ try:
     SECRET_KEY = os.environ['SECRET_KEY']
 except KeyError:
     print('using secret.py ...')
-    SECRET_KEY = siftsite.secret.django_secret
+    from . import secret
+    SECRET_KEY = secret.django_secret
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
