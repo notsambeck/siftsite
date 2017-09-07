@@ -47,7 +47,8 @@ def upload(filepath, label, source):
     '''POST request to your API with "files" key in requests data dict'''
 
     base_dir = os.path.expanduser(os.path.dirname(filepath))
-    url = 'http://localhost:8000/api/'
+    # url = 'http://localhost:8000/api/'
+    url = 'https://still-taiga-56301.herokuapp.com/api/'
     file_name = os.path.basename(filepath)
     with open(os.path.join(base_dir, file_name), 'rb') as fin:
         print('file:', base_dir, '/', file_name)
