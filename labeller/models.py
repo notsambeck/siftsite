@@ -19,6 +19,7 @@ total votes: for each image, label - number of votes
 
 class Image(models.Model):
     """ A database record for uploaded images to be labeled """
+    filename = models.FileField("file path", upload_to='images')
     source = models.CharField("image source: web, sift generator func, camera",
                               max_length=512, default=None, null=True)
     correct_label = models.IntegerField("Correct label; 0=simulated, 1=image")
@@ -31,7 +32,6 @@ class Image(models.Model):
     uploaded_by = models.ForeignKey(User, default=None, null=True)
     google_raw_data = jsonfield.JSONField('google cloud vision API - JSON',
                                           null=True)
-    filename = models.FileField("file path", upload_to='images')
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
