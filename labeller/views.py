@@ -69,11 +69,11 @@ def label_view(request, img_id=None):
 
 
 def list_view(request):
-    '''list_view shows up to 60 images'''
+    '''list_view shows up to 20 images'''
     imgs = Image.objects.all()
-    last60 = imgs.count() - 60
-    if last60 > 0:
-        imgs = imgs[last60:]
+    last_chunk = imgs.count() - 20
+    if last_chunk > 0:
+        imgs = imgs[last_chunk:]
 
     return render(request, 'list_view.html', {'images': imgs})
 

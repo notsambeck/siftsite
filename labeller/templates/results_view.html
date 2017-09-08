@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h3> IMAGE RESULTS: {{ image.filename }} </h3>
+<h3> IMAGE RESULTS: No. {{ image.id }} - {{ image.filename }} </h3>
 <p> nominally true label: {{ image.correct_label }} </p>
 <p> sift label: {{image.sift_label }} </p>
+<p> probability: {{ image.probability }} </p>
 <br />
 
 {% load static %}
@@ -24,7 +25,9 @@
 <p>description: {{ image.description }} </p>
 <p>tweeted: {{ image.tweeted }}</p>
 <p>google labels: {{ image.google_raw_data }}</p>
-<p>uploaded byL {{ image.uploaded_by }} </p>
+<p>uploaded by: {{ image.uploaded_by }} </p>
 <p>date uploaded: {{ image.date }}</p>
+
+<p><a href="{% url 'labeller:results' (image.id + 1) %}">next</a> - <a href="{% url 'labeller:results' (image.id - 1) %}">prev</a></p>
 
 {% endblock %}
