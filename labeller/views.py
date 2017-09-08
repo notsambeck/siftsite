@@ -84,7 +84,8 @@ def results(request, img_id):
     choices = Choice.objects.all()
     votes = TotalVotes.objects.filter(image=image)
     return render(request, 'results_view.html',
-                  {'image': image, 'votes': votes, 'choices': choices})
+                  {'image': image, 'votes': votes, 'choices': choices,
+                   'next': str(int(img_id) + 1), 'prev': str(int(img_id) - 1)})
 
 
 @api_view(['GET', 'POST'])

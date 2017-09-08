@@ -28,6 +28,6 @@
 <p>uploaded by: {{ image.uploaded_by }} </p>
 <p>date uploaded: {{ image.date }}</p>
 
-<p><a href="{% url 'labeller:results' (image.id + 1) %}">next</a> - <a href="{% url 'labeller:results' (image.id - 1) %}">prev</a></p>
+<p><a href="{% url 'labeller:results' next %}">next</a> - <a href="{% url 'labeller:results' prev %}">prev</a></p>
 
 {% endblock %}
