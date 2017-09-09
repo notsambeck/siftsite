@@ -43,4 +43,5 @@ sdist/*
 docs/api/*
 docs/_build/*
 cover/*
+media/images/*
 MANIFEST
