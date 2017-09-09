@@ -50,12 +50,6 @@ def create_choice(value, text):
     c.save()
 
 
-if Choice.objects.all().count() == 0:
-    print("CREATING CHOICES FROM models.py SCRIPT")
-    create_choice(1, 'appears to be a photographic image')
-    create_choice(0, 'is fake')
-
-
 class TotalVotes(models.Model):
     """ Aggregated votes (by all users) for an individual Image """
     image = models.ForeignKey(Image)
