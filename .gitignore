@@ -13,8 +13,8 @@ __pycache__/*
 */.ipynb_checkpoints/*
 *.h5
 
-# Secret
-secret*
+# Secret keys
+secret.*
 
 # Project files
 .ropeproject
@@ -44,3 +44,6 @@ docs/api/*
 docs/_build/*
 cover/*
 MANIFEST
+
+# Media files - include for now
+# media/images/*
