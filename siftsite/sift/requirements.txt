@@ -9,7 +9,7 @@ joblib==0.11
 keras
 olefile==0.44
 packaging==16.8
-Pillow==4.1.1
+Pillow==8.3.2
 pygame==1.9.3
 pyparsing==2.2.0
 python-dateutil==2.6.0
