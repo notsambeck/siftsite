@@ -5,7 +5,7 @@ gdbn==0.1
 google-cloud-vision
 gnumpy==0.2
 h5py
-joblib==0.11
+joblib==1.2.0
 keras
 olefile==0.44
 packaging==16.8
